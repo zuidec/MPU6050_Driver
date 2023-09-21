@@ -1,10 +1,21 @@
 #ifndef INC_MPU60X0_H
 #define INC_MPU60X0_H
 
-#include "core/common-defines.h"
+#include <stdint.h>
+#include <stdbool.h>
+
+#include "timers/simple-timer.h"
+
 // Edit the define below to access either SPI or I2C functions depending on your configuration
 //#define MPU_USE_SPI 1
 #define MPU_USE_I2C 1
+
+#ifdef MPU_USE_I2C
+    #include "drivers/i2c/i2c.h"
+#elif MPU_USE_SPI
+    #include "drivers/spi/spi.h"
+#endif
+
 /*
  * 			Registers
  */
@@ -105,6 +116,7 @@ typedef enum MPU60X0_Status {
     MPU60X0_Status mpu60X0_read_register(mpu60X0_t* mpu60X0, uint8_t address, uint8_t* data);
     MPU60X0_Status mpu60X0_write_register(mpu60X0_t* mpu60X0, uint8_t address, uint8_t data);
 #endif
+
 #ifdef MPU_USE_I2C
 
     typedef struct mpu60X0_t    {
